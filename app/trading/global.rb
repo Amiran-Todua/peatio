@@ -29,6 +29,14 @@ class Global
     seconds - (seconds % interval)
   end
 
+  def asks_from_db
+    OrderAsk.where(market_id: market_id).group(:price).sum(:volume)
+  end
+
+  def bids_from_db
+    OrderBid.where(market_id: market_id).group(:price).sum(:volume)
+  end
+
   def asks
     Rails.cache.read("peatio:#{market_id}:depth:asks") || []
   end
